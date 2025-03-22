@@ -1,16 +1,28 @@
-// src/App.js
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
+import React, { useState } from "react";
+import { fetchAIResponse } from "./api";
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
-  );
-}
+const Chat = () => {
+    const [prompt, setPrompt] = useState("");
+    const [response, setResponse] = useState("");
 
-export default App;
+    const handleSend = async () => {
+        const result = await fetchAIResponse(prompt);
+        setResponse(result);
+    };
+
+    return (
+        <div>
+            <h2>AI Chat</h2>
+            <input
+                type="text"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Enter your message"
+            />
+            <button onClick={handleSend}>Send</button>
+            <p>Response: {response}</p>
+        </div>
+    );
+};
+
+export default Chat;
